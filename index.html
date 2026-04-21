@@ -575,41 +575,11 @@ function pct(n){return Math.round(n)+"%";}
 
   // ── Formspree submission ──────────────────────────────────────────
   function submitToFormspree(data) {
-    try {
-      var form = document.createElement("form");
-      form.method = "POST";
-      form.action = "https://formspree.io/f/xdaylvng";
-      form.target = "formspree_iframe";
-      form.style.display = "none";
-      // Add hidden redirect field so Formspree doesn't redirect the page
-      var redir = document.createElement("input");
-      redir.type = "hidden";
-      redir.name = "_next";
-      redir.value = window.location.href;
-      form.appendChild(redir);
-      // Add all data fields
-      Object.keys(data).forEach(function(key) {
-        var input = document.createElement("input");
-        input.type = "hidden";
-        input.name = key;
-        input.value = data[key];
-        form.appendChild(input);
-      });
-      // Create hidden iframe to receive the response (prevents page redirect)
-      var iframe = document.getElementById("formspree_iframe");
-      if (!iframe) {
-        iframe = document.createElement("iframe");
-        iframe.name = "formspree_iframe";
-        iframe.id = "formspree_iframe";
-        iframe.style.display = "none";
-        document.body.appendChild(iframe);
-      }
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-    } catch(e) {
-      console.warn("Formspree error: " + e.message);
-    }
+    fetch("https://formspree.io/f/xdaylvng", {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).catch(function(e) { console.warn("Formspree error: " + e.message); });
   }
 
   var qLabels = {
