@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Much Tax Could You Save? | Fiscal Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#9A7530;
+  --bk:#0A0A0A;--bk2:#111111;--bk3:#1A1A1A;--bk4:#222222;
+  --wh:#FAFAF7;--wh-dim:rgba(250,250,247,0.72);--wh-faint:rgba(250,250,247,0.38);
+  --border:rgba(201,168,76,0.2);--border-mid:rgba(201,168,76,0.38);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bk);color:var(--wh);font-family:"DM Sans",sans-serif;font-weight:300;line-height:1.7;min-height:100vh;overflow-x:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2rem;border-bottom:1px solid var(--border);background:var(--bk2);position:sticky;top:0;z-index:100}
+.logo{font-family:"DM Sans",sans-serif;font-size:1.3rem;font-weight:600;color:var(--gold);letter-spacing:.04em}
+.logo span{color:var(--wh);font-weight:400}
+.prog-label{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.glow-line{width:100%;height:1px;background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);opacity:.3}
+.main{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.progress-track{width:100%;height:2px;background:rgba(201,168,76,.12);border-radius:99px;margin-bottom:2.5rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-step{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:.6rem}
+.q-heading{font-family:"DM Sans",sans-serif;font-size:clamp(1.45rem,3vw,1.9rem);font-weight:600;line-height:1.2;color:var(--wh);margin-bottom:.4rem}
+.q-heading em{font-style:italic;color:var(--gold)}
+.q-sub{font-size:.88rem;color:var(--wh-dim);margin-bottom:1.75rem}
+.options{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.75rem}
+.opt{display:flex;align-items:center;gap:14px;padding:.9rem 1.15rem;background:var(--bk3);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s,background .2s,color .2s;font-size:.9rem;color:var(--wh-dim);font-weight:300;user-select:none}
+.opt:hover{border-color:var(--border-mid);background:var(--bk4);color:var(--wh)}
+.opt.selected{border-color:var(--gold);background:rgba(201,168,76,.07);color:var(--wh)}
+.opt-letter{width:24px;height:24px;border-radius:50%;border:1px solid var(--border-mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem;font-weight:500;color:var(--gold);transition:background .2s,border-color .2s,color .2s}
+.opt.selected .opt-letter{background:var(--gold);color:var(--bk);border-color:var(--gold)}
+.btn-continue{padding:.8rem 2.2rem;background:var(--gold);color:var(--bk);font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;transition:background .2s,opacity .2s,transform .15s;opacity:.3;pointer-events:none}
+.btn-continue.ready{opacity:1;pointer-events:all}
+.btn-continue.ready:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-back{background:none;border:none;padding:0;font-family:"DM Sans",sans-serif;font-size:.78rem;color:var(--wh-faint);cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-bottom:1.5rem;transition:color .2s;letter-spacing:.02em}
+.btn-back:hover{color:var(--wh-dim)}
+.btn-back svg{width:14px;height:14px;opacity:.5}
+#result{display:none}
+#result.active{display:block;animation:fadeUp .5s ease both}
+.r-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);border:1px solid var(--border-mid);border-radius:100px;padding:.35rem 1.1rem;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:1.2rem}
+.r-badge svg{width:12px;height:12px;fill:var(--gold);flex-shrink:0}
+.r-headline{font-family:"DM Sans",sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:600;line-height:1.2;color:var(--wh);margin-bottom:.5rem}
+.r-headline em{font-style:italic;color:var(--gold)}
+.r-intro{font-size:.92rem;color:var(--wh-dim);margin-bottom:2rem;max-width:540px}
+.sim-panel{border:1px solid var(--border-mid);border-radius:10px;overflow:hidden;margin-bottom:1.75rem}
+.sim-header{display:grid;grid-template-columns:160px 1fr 1fr;background:var(--bk2);border-bottom:1px solid var(--border)}
+.shc{padding:.75rem 1rem;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+.shc.sp{border-right:1px solid var(--border)}
+.shc.cu{color:#888;border-right:1px solid var(--border)}
+.shc.po{color:var(--gold)}
+.sim-row{display:grid;grid-template-columns:160px 1fr 1fr;border-bottom:1px solid var(--border)}
+.sim-row:last-of-type{border-bottom:none}
+.sl{padding:.72rem 1rem;font-size:.76rem;color:var(--wh-faint);border-right:1px solid var(--border);display:flex;align-items:center}
+.sc{padding:.72rem 1rem;font-size:.85rem;color:var(--wh-dim);border-right:1px solid var(--border)}
+.sp2{padding:.72rem 1rem;font-size:.85rem;color:var(--gold)}
+.sav-row{display:grid;grid-template-columns:160px 1fr;background:rgba(201,168,76,.06);border-top:1px solid var(--border-mid)}
+.sav-lbl{padding:.9rem 1rem;font-size:.76rem;color:var(--gold);font-weight:500;border-right:1px solid var(--border-mid);display:flex;align-items:center}
+.sav-val{padding:.9rem 1rem;display:flex;align-items:baseline;gap:8px}
+.sav-num{font-family:"DM Sans",sans-serif;font-size:1.6rem;font-weight:600;color:var(--gold);line-height:1;letter-spacing:-.01em}
+.sav-sub{font-size:.72rem;color:var(--wh-faint)}
+.sim-note{padding:.6rem 1rem;font-size:.7rem;color:var(--wh-faint);background:var(--bk2);border-top:1px solid var(--border);font-style:italic}
+.insights{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.75rem}
+.insight{display:flex;align-items:flex-start;gap:12px;padding:.8rem 1.1rem;background:var(--bk3);border-radius:7px;border-left:2px solid var(--gold);font-size:.87rem;color:var(--wh-dim);line-height:1.6}
+.idot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:8px}
+.cta-wrap{margin-bottom:.9rem}
+.btn-cta{display:block;width:100%;padding:1.05rem 1.5rem;background:var(--gold);color:var(--bk);font-family:"DM Sans",sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:8px;cursor:pointer;text-align:center;transition:background .2s,transform .15s}
+.btn-cta:hover{background:var(--gold-light);transform:translateY(-1px)}
+.r-disc{font-size:.7rem;color:var(--wh-faint);text-align:center;line-height:1.6}
+.nonuk-panel{border:1px solid var(--border-mid);border-radius:10px;overflow:hidden;margin-bottom:1.75rem;background:var(--bk3)}
+.nonuk-row{display:flex;align-items:flex-start;gap:14px;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+.nonuk-row-last{border-bottom:none}
+.nonuk-icon{color:var(--gold);flex-shrink:0;margin-top:2px}
+.nonuk-title{font-size:.88rem;font-weight:500;color:var(--wh);margin-bottom:.2rem}
+.nonuk-desc{font-size:.82rem;color:var(--wh-dim);line-height:1.6}
+.urgency-box{background:rgba(201,168,76,.07);border:1px solid var(--border-strong);border-radius:8px;padding:1.1rem 1.5rem;text-align:center;margin-bottom:1.25rem}
+.urgency-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:.3rem}
+.urgency-num{font-family:"DM Sans",sans-serif;font-size:2.4rem;font-weight:600;color:var(--gold);line-height:1;letter-spacing:-.02em}
+.urgency-sub{font-size:.78rem;color:var(--wh-dim);margin-top:.3rem}
+.gdiv{width:48px;height:1px;background:var(--gold);opacity:.5;margin:0 auto 2rem}
+footer{text-align:center;padding:2rem 1.5rem;border-top:1px solid var(--border);background:var(--bk2);font-size:.72rem;color:#555;letter-spacing:.06em}
+.flogo{font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:600;color:var(--gold);margin-bottom:.4rem}
+@media(max-width:520px){
+  .sim-header,.sim-row{grid-template-columns:110px 1fr 1fr}
+  .sav-row{grid-template-columns:110px 1fr}
+  .main{padding:1.75rem 1rem 3rem}
+}
+
+/* ── LANDING PAGE ─────────────────────────────────────────────── */
+#landing { display:block }
+#quiz-wrapper { display:none }
+
+.lp-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* topbar */
+.lp-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bk2);
+}
+.lp-bar .logo {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.3rem; font-weight: 600;
+  color: var(--gold); letter-spacing: .04em;
+}
+.lp-bar .logo span { color: var(--wh); font-weight: 400; }
+
+/* hero: full-height centred column */
+.lp-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 1.5rem 4rem;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lp-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .7rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 1.75rem;
+  opacity: 0;
+  animation: lp-up .5s ease .05s forwards;
+}
+.lp-kicker-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: lp-pulse 2s ease-out infinite;
+}
+@keyframes lp-pulse {
+  0%   { opacity: 1; transform: scale(1); }
+  60%  { opacity: 0; transform: scale(2.2); }
+  100% { opacity: 0; }
+}
+
+.lp-h1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.08;
+  color: var(--wh);
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: lp-up .55s ease .15s forwards;
+}
+.lp-h1 em { font-style: italic; color: var(--gold); }
+
+.lp-sub {
+  font-size: 1rem;
+  color: var(--wh-dim);
+  line-height: 1.75;
+  max-width: 420px;
+  margin: 0 auto 2.5rem;
+  opacity: 0;
+  animation: lp-up .55s ease .25s forwards;
+}
+
+.lp-btn {
+  display: inline-block;
+  padding: 1rem 2.75rem;
+  background: var(--gold);
+  color: var(--bk);
+  font-family: "DM Sans", sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: lp-up .55s ease .35s forwards;
+}
+.lp-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.lp-meta {
+  font-size: .73rem;
+  color: var(--wh-faint);
+  letter-spacing: .04em;
+  opacity: 0;
+  animation: lp-up .5s ease .42s forwards;
+}
+.lp-meta span { color: var(--gold); }
+
+/* three-stat strip */
+.lp-stats {
+  display: flex;
+  border-top: 1px solid var(--border);
+  background: var(--bk2);
+  margin-top: auto;
+}
+.lp-stat {
+  flex: 1;
+  padding: 1.4rem 1.25rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.lp-stat:last-child { border-right: none; }
+.lp-stat-n {
+  font-family: "DM Sans",sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: .3rem;
+  letter-spacing: -.01em;
+}
+.lp-stat-l {
+  font-size: .7rem;
+  color: var(--wh-faint);
+  line-height: 1.45;
+}
+
+@keyframes lp-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 520px) {
+  .lp-bar { padding: 1rem 1.25rem; }
+  .lp-hero { padding: 3.5rem 1.25rem 3rem; }
+  .lp-stats { flex-direction: column; }
+  .lp-stat { border-right: none; border-bottom: 1px solid var(--border); padding: 1.1rem 1.25rem; }
+  .lp-stat:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing">
+  <div class="lp-wrap">
+
+    <div class="lp-bar">
+      <div class="logo">Fiscal<span> Blueprint</span></div>
+    </div>
+    <div class="glow-line"></div>
+
+    <div class="lp-hero">
+      <div class="lp-kicker">
+        <div class="lp-kicker-dot"></div>
+        Free tax simulation
+      </div>
+
+      <h1 class="lp-h1">
+        How much tax could you<br><em>legally stop paying?</em>
+      </h1>
+
+      <p class="lp-sub">
+        6 questions. 60 seconds. See what you currently pay to extract your profit, and what you could pay instead.
+      </p>
+
+      <button class="lp-btn" onclick="startQuiz()">
+        Run my simulation &rarr;
+      </button>
+
+      <div class="lp-meta">
+        Takes 60 seconds &nbsp;&middot;&nbsp;
+        <span>No email required</span> &nbsp;&middot;&nbsp;
+        Completely confidential
+      </div>
+    </div>
+
+    <div class="lp-stats">
+      <div class="lp-stat">
+        <div class="lp-stat-n">60–70%</div>
+        <div class="lp-stat-l">Average effective tax rate reduction for our clients</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-n">15–30</div>
+        <div class="lp-stat-l">Days from decision to fully compliant structure</div>
+      </div>
+      <div class="lp-stat">
+        <div class="lp-stat-n">£150K+</div>
+        <div class="lp-stat-l">Expected first-year saving for a typical client</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-wrapper">
+
+
+<div class="topbar">
+  <div class="logo">Fiscal<span> Blueprint</span></div>
+  <div class="prog-label" id="prog-label">Question 1 of 6</div>
+</div>
+<div class="glow-line"></div>
+<div class="main">
+  <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:16.66%"></div></div>
+
+  <div class="screen active" id="q0">
+    <div class="q-step">Your profile</div>
+    <div class="q-heading">Where are you <em>currently based?</em></div>
+    <p class="q-sub">This determines your starting tax position and which strategies apply to you.</p>
+    <div class="options" data-q="0">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div>United Kingdom</div>
+      <div class="opt" data-i="1"><div class="opt-letter">B</div>Elsewhere</div>
+    </div>
+    <button class="btn-continue" onclick="advance(0)">Continue</button>
+  </div>
+
+  <div class="screen" id="q1">
+    <button class="btn-back" onclick="goBack(1)">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="q-step">Your income</div>
+    <div class="q-heading">What is your company's <em>annual profit</em> (approx.)?</div>
+    <p class="q-sub">Before tax. We'll model what it costs to extract all of it in your current jurisdiction, versus an optimised structure abroad.</p>
+    <div class="options" data-q="1">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div><span class="il"></span></div>
+      <div class="opt" data-i="1"><div class="opt-letter">B</div><span class="il"></span></div>
+      <div class="opt" data-i="2"><div class="opt-letter">C</div><span class="il"></span></div>
+      <div class="opt" data-i="3"><div class="opt-letter">D</div><span class="il"></span></div>
+      <div class="opt" data-i="4"><div class="opt-letter">E</div><span class="il"></span></div>
+    </div>
+    <button class="btn-continue" onclick="advance(1)">Continue</button>
+  </div>
+
+  <div class="screen" id="q2">
+    <button class="btn-back" onclick="goBack(2)">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="q-step">Business structure</div>
+    <div class="q-heading">How is your <em>business structured?</em></div>
+    <p class="q-sub">Select the option that most closely matches your current setup.</p>
+    <div class="options" data-q="2">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div>Standard limited company</div>
+      <div class="opt" data-i="2"><div class="opt-letter">B</div>Holding company / group structure</div>
+      <div class="opt" data-i="3"><div class="opt-letter">C</div>Not sure yet / other</div>
+    </div>
+    <button class="btn-continue" onclick="advance(2)">Continue</button>
+  </div>
+
+  <div class="screen" id="q3">
+    <button class="btn-back" onclick="goBack(3)">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="q-step">Tax pain</div>
+    <div class="q-heading">What is your <em>biggest tax pain</em> right now?</div>
+    <p class="q-sub">Choose the one that feels most urgent.</p>
+    <div class="options" data-q="3">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div>Income tax is eating my profits</div>
+      <div class="opt" data-i="1"><div class="opt-letter">B</div>I have a capital gains event coming</div>
+      <div class="opt" data-i="2"><div class="opt-letter">C</div>I pay corporation tax and dividend tax on top</div>
+      <div class="opt" data-i="3"><div class="opt-letter">D</div>I am paying tax in multiple countries</div>
+      <div class="opt" data-i="4"><div class="opt-letter">E</div>I just know I pay too much but do not know how to fix it</div>
+    </div>
+    <button class="btn-continue" onclick="advance(3)">Continue</button>
+  </div>
+
+  <div class="screen" id="q4">
+    <button class="btn-back" onclick="goBack(4)">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="q-step">Relocation readiness</div>
+    <div class="q-heading">Have you <em>seriously considered relocating</em> to reduce your tax?</div>
+    <p class="q-sub">Honest answers give you the most accurate result.</p>
+    <div class="options" data-q="4">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div>Never thought about it until now</div>
+      <div class="opt" data-i="1"><div class="opt-letter">B</div>I have thought about it but have not researched it</div>
+      <div class="opt" data-i="2"><div class="opt-letter">C</div>I have researched some options but have not committed</div>
+      <div class="opt" data-i="3"><div class="opt-letter">D</div>I am ready to move. I just need the right strategy</div>
+    </div>
+    <button class="btn-continue" onclick="advance(4)">Continue</button>
+  </div>
+
+  <div class="screen" id="q5">
+    <button class="btn-back" onclick="goBack(5)">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="q-step">Your situation</div>
+    <div class="q-heading">What is <em>holding you back?</em></div>
+    <p class="q-sub">There are no wrong answers here.</p>
+    <div class="options" data-q="5">
+      <div class="opt" data-i="0"><div class="opt-letter">A</div>Family and lifestyle. I do not want to uproot my life</div>
+      <div class="opt" data-i="1"><div class="opt-letter">B</div>I am not sure it is fully legal and compliant</div>
+      <div class="opt" data-i="2"><div class="opt-letter">C</div>I do not know which country makes sense for me</div>
+      <div class="opt" data-i="3"><div class="opt-letter">D</div>Worried about disruption to my business or clients</div>
+      <div class="opt" data-i="4"><div class="opt-letter">E</div>Nothing. I just need the numbers and the plan</div>
+    </div>
+    <button class="btn-continue" onclick="showResult()">See my result</button>
+  </div>
+
+  <div id="result">
+    <div class="r-badge">
+      <svg viewBox="0 0 20 20"><path d="M10 1l2.4 7.2H20l-6.2 4.5 2.4 7.2L10 15.4l-6.2 4.5 2.4-7.2L0 8.2h7.6z"/></svg>
+      Your tax simulation
+    </div>
+    <div class="r-headline">Your simulation shows a potential saving of <em id="r-range"></em></div>
+    <p class="r-intro" id="r-intro"></p>
+    <div class="sim-panel">
+      <div class="sim-header">
+        <div class="shc sp"></div>
+        <div class="shc cu">Current jurisdiction</div>
+        <div class="shc po">Optimised structure</div>
+      </div>
+      <div id="sim-rows"></div>
+      <div class="sav-row">
+        <div class="sav-lbl">Est. annual saving</div>
+        <div class="sav-val"><div class="sav-num" id="sav-num"></div><div class="sav-sub">per year</div></div>
+      </div>
+      <div class="sim-note" id="sim-note"></div>
+    </div>
+    <div class="insights" id="insights"></div>
+    <div class="gdiv"></div>
+
+    <div class="urgency-box" id="urgency-box" style="display:none">
+      <div class="urgency-label">Cost of delay</div>
+      <div class="urgency-num" id="urgency-num"></div>
+      <div class="urgency-sub">every month you stay in your current structure</div>
+    </div>
+    <div class="cta-wrap"><button class="btn-cta" id="cta-btn">Book your free strategy call &rarr;</button></div>
+
+    <p class="r-disc">These estimates are based on full extraction of all company profit into personal hands. This is not tax advice.</p>
+  </div>
+
+  <!-- NON-UK RESULT SCREEN -->
+  <div id="result-nonuk" style="display:none">
+    <div class="r-badge">
+      <svg viewBox="0 0 20 20"><path d="M10 1l2.4 7.2H20l-6.2 4.5 2.4 7.2L10 15.4l-6.2 4.5 2.4-7.2L0 8.2h7.6z"/></svg>
+      Your profile
+    </div>
+    <div class="r-headline">Your situation calls for a <em>tailored assessment</em></div>
+    <p class="r-intro">Tax rates and extraction costs vary too much across jurisdictions for a single simulation to be accurate. What we can tell you is this: if you are running a profitable business and paying meaningful tax, there is almost certainly a more efficient structure available to you.</p>
+
+    <div class="nonuk-panel">
+
+    </div>
+
+    <div class="gdiv"></div>
+    <div class="cta-wrap"><button class="btn-cta">Book your free strategy call &rarr;</button></div>
+    <p class="r-disc">Tax rates vary significantly by jurisdiction. A strategy call provides a personalised assessment specific to your situation. This is not tax advice.</p>
+  </div>
+
+</div>
+<footer><div class="flogo">Fiscal Blueprint</div>Fiscal Blueprint &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; Takes 60 seconds</footer>
+
+<script>
+// TAX ENGINE: all rates from official 2025/26 sources
+// UK: HMRC 2025/26, director optimal structure (salary GBP12,570 + dividends)
+function calcUK(g){
+  // Corp tax: 19% up to £50k (small profits), tapers to 25% by £250k, 25% above
+  var ct;
+  if(g<=50000){ ct=g*0.19; }
+  else if(g<=250000){ ct=g*(0.19+(0.06*(g-50000)/200000)); }
+  else{ ct=g*0.25; }
+  var post=g-ct;
+  // Director: £12,570 salary + rest as dividends
+  var sal=Math.min(post,12570);
+  var divIncome=Math.max(0,post-sal);
+  var grossP=sal+divIncome;
+  // Personal allowance taper above £100k
+  var pa=grossP>125140?0:grossP>100000?Math.max(0,12570-Math.floor((grossP-100000)/2)):12570;
+  // Income tax on salary
+  var st=Math.max(0,sal-pa),it=0;
+  it+=Math.min(st,37700)*0.20;
+  if(st>37700)it+=Math.min(st-37700,74870)*0.40;
+  if(st>112570)it+=(st-112570)*0.45;
+  // Employee NI on salary
+  var ni=sal>12570?Math.min(sal-12570,37700)*0.08:0;
+  if(sal>50270)ni+=(sal-50270)*0.02;
+  // Dividend tax (April 2026 rates: 10.75% / 35.75% / 39.35%)
+  var paRem=Math.max(0,pa-sal);
+  var divNet=Math.max(0,divIncome-paRem-500);
+  var basicRem=Math.max(0,37700-Math.max(0,sal-pa));
+  var dt=0;
+  if(divNet>0){
+    var inB=Math.min(divNet,basicRem);dt+=inB*0.1075;
+    var ov=divNet-inB;
+    if(ov>0){
+      var hCap=Math.max(0,125140-grossP);
+      dt+=Math.min(ov,hCap)*0.3575;
+      dt+=Math.max(0,ov-hCap)*0.3935;
+    }
+  }
+  return Math.round(ct+it+ni+dt);
+}
+
+// Optimised international structure
+// Effective rate on gross profit: ~15.5%
+function calcOptimised(g){ return Math.round(g*0.155); }
+
+var LOCS=[
+  {sym:"GBP",s:"£",fn:calcUK,note:"These estimates are based on full extraction of all company profit into personal hands. This is not tax advice."},
+  {sym:"GBP",s:"£",fn:calcUK,note:""}
+];
+var MIDS=[175000,375000,750000,2000000,5000000];
+var RANGES=[[100,250],[250,500],[500,1000],[1000,5000],[5000,null]];
+
+function fmt(s,n){
+  if(n>=1000000)return s+(n/1000000).toFixed(1)+"M";
+  if(n>=1000)return s+Math.round(n/1000)+"K";
+  return s+n.toLocaleString();
+}
+function pct(n){return Math.round(n)+"%";}
+
+
+  // ── Formspree submission ──────────────────────────────────────────
+  function submitToFormspree(data) {
+    fetch("https://formspree.io/f/xdaylvng", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data)
+    }).catch(function(){});  // silent fail — never block the user
+  }
+
+  var qLabels = {
+    0: {0:"United Kingdom",1:"Elsewhere"},
+    1: {0:"£100k - £250k",1:"£250k - £500k",2:"£500k - £1M",3:"£1M - £5M",4:"£5M+"},
+    2: {0:"Standard limited company",2:"Holding company / group structure",3:"Not sure yet / other"},
+    3: {0:"Income tax eating profits",1:"Capital gains event coming",2:"Corporation tax + dividend tax",3:"Paying tax in multiple countries",4:"I just know I pay too much"},
+    4: {0:"Never thought about it",1:"Thought about it, not researched",2:"Researched, not committed",3:"Ready to move, need the strategy"},
+    5: {0:"Family and lifestyle concerns",1:"Not sure it is legal / compliant",2:"Don't know which country",3:"Worried about business disruption",4:"Nothing, just need the numbers and the plan"}
+  };
+
+  var ANS={};
+document.querySelectorAll(".options").forEach(function(g){
+  g.querySelectorAll(".opt").forEach(function(o){
+    o.addEventListener("click",function(){
+      var q=+g.dataset.q;
+      g.querySelectorAll(".opt").forEach(function(x){x.classList.remove("selected");});
+      o.classList.add("selected");
+      ANS[q]=+o.dataset.i;
+      g.closest(".screen").querySelector(".btn-continue").classList.add("ready");
+    });
+  });
+});
+
+function setLabels(){
+  document.querySelectorAll(".il").forEach(function(el,i){
+    var r=RANGES[i];
+    el.textContent=r[1]
+      ?("£"+r[0]+"k – £"+(r[1]>=1000?(r[1]/1000)+"M":r[1]+"k"))
+      :("£"+(r[0]>=1000?(r[0]/1000)+"M":r[0]+"k")+"+");
+  });
+}
+setLabels();
+
+function goBack(q){
+  document.getElementById("q"+q).classList.remove("active");
+  document.getElementById("q"+q).style.display="none";
+  var prev=document.getElementById("q"+(q-1));
+  prev.style.display="block";
+  setTimeout(function(){prev.classList.add("active");},10);
+  var s=Math.max(1,q);
+  document.getElementById("prog-label").textContent="Question "+s+" of 6";
+  document.getElementById("prog-fill").style.width=(s/6*100)+"%";
+}
+
+function advance(q){
+  if(ANS[q]===undefined)return;
+  
+  document.getElementById("q"+q).classList.remove("active");
+  document.getElementById("q"+q).style.display="none";
+  var nxt=document.getElementById("q"+(q+1));
+  if(nxt){nxt.style.display="block";setTimeout(function(){nxt.classList.add("active");},10);}
+  var s=Math.min(q+2,6);
+  document.getElementById("prog-label").textContent="Question "+s+" of 6";
+  document.getElementById("prog-fill").style.width=(s/6*100)+"%";
+}
+
+function showResult(){
+  if(ANS[5]===undefined)return;
+  document.getElementById("q5").classList.remove("active");
+  document.getElementById("q5").style.display="none";
+  document.getElementById("prog-label").textContent="Your Result";
+  document.getElementById("prog-fill").style.width="100%";
+
+  var li=ANS[0]!==undefined?ANS[0]:0,ii=ANS[1]!==undefined?ANS[1]:2,pi=ANS[3]!==undefined?ANS[3]:4,ri=ANS[4]!==undefined?ANS[4]:1,bi=ANS[5]!==undefined?ANS[5]:4;
+
+  // Non-UK: show simplified results screen
+  if(li !== 0){
+    var nonuk=document.getElementById("result-nonuk");
+    nonuk.style.display="block";
+    setTimeout(function(){nonuk.style.animation="fadeUp .5s ease both";},10);
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+
+  var loc=LOCS[li],gross=MIDS[ii];
+  var curTax=loc.fn(gross),postTax=calcOptimised(gross);
+  var saving=Math.max(0,curTax-postTax);
+  var curR=Math.round(curTax/gross*100),postR=Math.round(postTax/gross*100);
+  var sLo=Math.round(saving*0.85/1000)*1000,sHi=Math.round(saving*1.15/1000)*1000;
+  var sStr=fmt(loc.s,sLo)+" - "+fmt(loc.s,sHi);
+
+  document.getElementById("r-range").textContent=sStr+" per year";
+  document.getElementById("sav-num").textContent=sStr;
+  document.getElementById("sim-note").textContent="These estimates are based on full extraction of all company profit into personal hands. This is not tax advice.";
+
+  document.getElementById("sim-rows").innerHTML=[
+    ["Company profit",fmt(loc.s,gross)+" p.a.",fmt(loc.s,gross)+" p.a."],
+    ["Effective tax rate",pct(curR),pct(postR)],
+    ["Est. tax liability",fmt(loc.s,curTax)+" p.a.",fmt(loc.s,postTax)+" p.a."],
+    ["Net income retained",fmt(loc.s,gross-curTax)+" p.a.",fmt(loc.s,gross-postTax)+" p.a."]
+  ].map(function(r){return'<div class="sim-row"><div class="sl">'+r[0]+'</div><div class="sc">'+r[1]+'</div><div class="sp2">'+r[2]+'</div></div>';}).join("");
+
+  var intros=["Most founders at this stage are surprised by how achievable this actually is. The numbers alone tend to make the decision straightforward.","You are further ahead than most. A clear, compliant structure is the only step remaining between your current position and a significantly lower tax bill.","You have done the research. Now you need the structure. The strategy call maps your exact jurisdiction, holding arrangement, and timeline in a single session.","You are ready. The jurisdictions, the holding structure, the implementation. That is exactly what the strategy call is built to deliver."];
+  document.getElementById("r-intro").textContent=intros[ri]||intros[1];
+
+  // Monthly cost urgency line
+  var monthlyCost = Math.round(saving / 12 / 1000) * 1000;
+  var urgBox = document.getElementById("urgency-box");
+  var urgNum = document.getElementById("urgency-num");
+  if (urgBox && urgNum && monthlyCost > 0) {
+    urgNum.textContent = fmt(loc.s, monthlyCost) + " / month";
+    urgBox.style.display = "block";
+  }
+
+  // Wire CTA button to submit to Formspree then open Calendly
+  var ctaBtn = document.getElementById("cta-btn");
+  if (ctaBtn) {
+    ctaBtn.onclick = function() {
+      submitToFormspree({
+        "_subject": "New lead - Fiscal Blueprint quiz",
+        "Location":         qLabels[0][ANS[0]!==undefined?ANS[0]:0] || "Unknown",
+        "Company profit":   qLabels[1][ANS[1]!==undefined?ANS[1]:0] || "Unknown",
+        "Structure":        qLabels[2][ANS[2]!==undefined?ANS[2]:0] || "Unknown",
+        "Tax pain":         qLabels[3][ANS[3]!==undefined?ANS[3]:0] || "Unknown",
+        "Readiness":        qLabels[4][ANS[4]!==undefined?ANS[4]:0] || "Unknown",
+        "Blocker":          qLabels[5][ANS[5]!==undefined?ANS[5]:0] || "Unknown",
+        "Current eff. rate":   pct(curR),
+        "Optimised eff. rate": pct(postR),
+        "Est. tax liability":  fmt(loc.s, curTax) + " / yr",
+        "Post-restructure tax": fmt(loc.s, postTax) + " / yr",
+        "Est. annual saving":  sStr,
+        "Monthly cost of delay": fmt(loc.s, monthlyCost) + " / month"
+      });
+      // Replace this URL with your Calendly booking link
+      window.location.href = "https://calendly.com/teodor-kn-fiscal-blueprint/tax-strategy-assessment";
+    };
+  }
+
+  var disc = document.getElementById("r-disc-main");
+  if (disc) {
+    disc.innerHTML = "Figures assume full extraction of company profit into personal hands each year, including corporation tax and all personal taxes. Optimised rate is illustrative. This is not tax advice.";
+  }
+
+  var locI=["As a UK founder, corporation tax, income tax, NI, and dividend tax combine to produce an effective rate of "+pct(curR)+" on your gross profit. An optimised international structure reduces this to ~15.5%.","US founders face combined federal, state, and SE tax that stacks to "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Canadian founders face federal plus provincial tax stacking to "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Australian founders face ATO brackets plus Medicare levy producing "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","EU jurisdictions combine corporate tax, income tax, and social charges to produce "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Many Middle East founders assume they are already optimised, but business income, cross-border structures, and upcoming liquidity events can create meaningful liability estimated at "+pct(curR)+" or above.","Your starting tax position depends on your exact country of residence and structure. Clarifying this is one of the first steps on the strategy call."];
+  var painI=["Your income tax exposure is ongoing. Every month without a strategy in place is a direct, measurable cost. Not a future problem.","A capital gains event is time-sensitive. Tax residency must change before the gain crystallises, not after. If a sale or liquidity event is approaching, the window to act is now.","The stack of corporation tax, dividend tax, and income tax is the most common driver for restructuring at your level. A correctly structured company in a lower-tax jurisdiction — combined with a change in personal tax residency, exiting the UK tax net entirely — addresses all of this simultaneously.","Operating across multiple jurisdictions without a deliberate structure creates overlap, uncertainty, and unnecessary double-exposure. A coherent strategy eliminates all of this.","Not knowing the exact problem is the most common starting point. The strategy call is designed to identify precisely where your exposure is highest and what to do about it."];
+  var blockI=["Lifestyle continuity is possible. Most clients restructure without a significant change to where they spend their time day-to-day. It is about legal tax residency, not physical displacement.","Every structure we implement is fully compliant and legally defensible. We work with specialist international tax counsel in every relevant jurisdiction and do not operate in grey areas.","Choosing the right jurisdiction depends on your income type, business structure, family situation, and lifestyle preferences. That is exactly what the personalised strategy plan maps out. Not a generic answer.","Client relationships, contracts, and day-to-day operations rarely need to change. The restructuring happens at the holding and residency level, not at the operational layer your clients interact with.","Since nothing is holding you back, the strategy call is the only remaining step. We map your exact structure, jurisdiction, timeline, and projected savings in one session."];
+
+  document.getElementById("insights").innerHTML=[locI[li],painI[pi],blockI[bi]].map(function(t){return'<div class="insight"><div class="idot"></div><span>'+t+'</span></div>';}).join("");
+
+  var res=document.getElementById("result");
+  res.style.display="block";
+  setTimeout(function(){res.classList.add("active");},10);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+
+
+</div>
+
+<script>
+function startQuiz() {
+  document.getElementById("landing").style.display = "none";
+  document.getElementById("quiz-wrapper").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+</body>
+</html>
