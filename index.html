@@ -480,7 +480,7 @@ footer{text-align:center;padding:2rem 1.5rem;border-top:1px solid var(--border);
     </div>
     <div class="cta-wrap"><button class="btn-cta" id="cta-btn">Book your free strategy call &rarr;</button></div>
 
-    <p class="r-disc">These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax — assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice.</p>
+    <p class="r-disc">These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax,assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice.</p>
   </div>
 
   <!-- NON-UK RESULT SCREEN -->
@@ -555,7 +555,7 @@ function calcUK(g){
 function calcOptimised(g){ return Math.round(g*0.155); }
 
 var LOCS=[
-  {sym:"GBP",s:"£",fn:calcUK,note:"These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax — assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice."},
+  {sym:"GBP",s:"£",fn:calcUK,note:"These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax,assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice."},
   {sym:"GBP",s:"£",fn:calcUK,note:""}
 ];
 var MIDS=[175000,375000,750000,2000000,5000000];
@@ -695,7 +695,7 @@ function showResultFinal(){
 
   document.getElementById("r-range").textContent=sStr+" per year";
   document.getElementById("sav-num").textContent=sStr;
-  document.getElementById("sim-note").textContent="These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax — assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice.";
+  document.getElementById("sim-note").textContent="These estimates reflect the combined effect of corporation tax, income tax, National Insurance, and dividend tax,assuming all company profit is extracted into personal hands in a single tax year. This is not tax advice.";
 
   document.getElementById("sim-rows").innerHTML=[
     ["Company profit",fmt(loc.s,gross)+" p.a.",fmt(loc.s,gross)+" p.a."],
@@ -748,7 +748,7 @@ function showResultFinal(){
   }
 
   var locI=["As a UK founder, corporation tax (up to 25%), income tax, NI, and dividend tax (up to 39.35%) stack on top of each other. At your profit level, the combined effective rate on full extraction is "+pct(curR)+". That means for every £1 your company earns, you keep "+fmt(loc.s, Math.round((1 - curTax/gross) * 100))+"p after all taxes.","US founders face combined federal, state, and SE tax that stacks to "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Canadian founders face federal plus provincial tax stacking to "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Australian founders face ATO brackets plus Medicare levy producing "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","EU jurisdictions combine corporate tax, income tax, and social charges to produce "+pct(curR)+" effective rate on gross profit. An optimised international structure can reduce this substantially.","Many Middle East founders assume they are already optimised, but business income, cross-border structures, and upcoming liquidity events can create meaningful liability estimated at "+pct(curR)+" or above.","Your starting tax position depends on your exact country of residence and structure. Clarifying this is one of the first steps on the strategy call."];
-  var painI=["Your income tax exposure is ongoing. Every month without a strategy in place is a direct, measurable cost. Not a future problem.","A capital gains event is time-sensitive. Tax residency must change before the gain crystallises, not after. If a sale or liquidity event is approaching, the window to act is now.","The stack of corporation tax, dividend tax, and income tax is the most common driver for restructuring at your level. A correctly structured company in a lower-tax jurisdiction — combined with a change in personal tax residency, exiting the UK tax net entirely — addresses all of this simultaneously.","Operating across multiple jurisdictions without a deliberate structure creates overlap, uncertainty, and unnecessary double-exposure. A coherent strategy eliminates all of this.","Not knowing the exact problem is the most common starting point. The strategy call is designed to identify precisely where your exposure is highest and what to do about it."];
+  var painI=["Your income tax exposure is ongoing. Every month without a strategy in place is a direct, measurable cost. Not a future problem.","A capital gains event is time-sensitive. Tax residency must change before the gain crystallises, not after. If a sale or liquidity event is approaching, the window to act is now.","The stack of corporation tax, dividend tax, and income tax is the most common driver for restructuring at your level. A correctly structured company in a lower-tax jurisdiction,combined with a change in personal tax residency, exiting the UK tax net entirely,addresses all of this simultaneously.","Operating across multiple jurisdictions without a deliberate structure creates overlap, uncertainty, and unnecessary double-exposure. A coherent strategy eliminates all of this.","Not knowing the exact problem is the most common starting point. The strategy call is designed to identify precisely where your exposure is highest and what to do about it."];
   var blockI=["Lifestyle continuity is possible. Most clients restructure without a significant change to where they spend their time day-to-day. It is about legal tax residency, not physical displacement.","Every structure we implement is fully compliant and legally defensible. We work with specialist international tax counsel in every relevant jurisdiction and do not operate in grey areas.","Choosing the right jurisdiction depends on your income type, business structure, family situation, and lifestyle preferences. That is exactly what the personalised strategy plan maps out. Not a generic answer.","Client relationships, contracts, and day-to-day operations rarely need to change. The restructuring happens at the holding and residency level, not at the operational layer your clients interact with.","Since nothing is holding you back, the strategy call is the only remaining step. We map your exact structure, jurisdiction, timeline, and projected savings in one session."];
 
   document.getElementById("insights").innerHTML=[locI[li],painI[pi],blockI[bi]].map(function(t){return'<div class="insight"><div class="idot"></div><span>'+t+'</span></div>';}).join("");
