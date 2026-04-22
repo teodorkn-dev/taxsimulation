@@ -656,6 +656,17 @@ function showResult(){
     document.getElementById("cap-name").style.borderColor=name?"var(--border)":"rgba(201,168,76,0.8)";
     return;
   }
+  submitToFormspree({
+    "_subject": "New lead - Fiscal Blueprint quiz",
+    "Name":     name,
+    "Email":    email,
+    "Location":       qLabels[0][ANS[0]!==undefined?ANS[0]:0]||"Unknown",
+    "Company profit": qLabels[1][ANS[1]!==undefined?ANS[1]:0]||"Unknown",
+    "Structure":      qLabels[2][ANS[2]!==undefined?ANS[2]:0]||"Unknown",
+    "Tax pain":       qLabels[3][ANS[3]!==undefined?ANS[3]:0]||"Unknown",
+    "Readiness":      qLabels[4][ANS[4]!==undefined?ANS[4]:0]||"Unknown",
+    "Blocker":        qLabels[5][ANS[5]!==undefined?ANS[5]:0]||"Unknown"
+  });
   document.getElementById("cap").style.display="none";
   showResultFinal();
 }
