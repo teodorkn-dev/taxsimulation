@@ -588,6 +588,12 @@ function pct(n){return Math.round(n)+"%";}
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(data)
     }).catch(function(e) { console.warn("Formspree error: " + e.message); });
+
+    fetch("https://hook.eu1.make.com/dr2si6w6axfcsm29v1t1mo2ocq2x0jrw", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).catch(function(e) { console.warn("Make.com error: " + e.message); });
   }
 
   var qLabels = {
