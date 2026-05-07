@@ -716,9 +716,9 @@ function showResultFinal(){
       "Tax pain":       qLabels[3][ANS[3]!==undefined?ANS[3]:0]||"Unknown",
       "Readiness":      qLabels[4][ANS[4]!==undefined?ANS[4]:0]||"Unknown",
       "Blocker":        qLabels[5][ANS[5]!==undefined?ANS[5]:0]||"Unknown",
-      "Est. annual saving": sStr.replace(/£/g,"GBP "),
-      "Saving low":     fmt(loc.s,sLo).replace(/£/g,"GBP "),
-      "Saving high":    fmt(loc.s,sHi).replace(/£/g,"GBP ")
+      "Est. annual saving": sStr,
+      "Saving low":     fmt(loc.s,sLo),
+      "Saving high":    fmt(loc.s,sHi)
     })
   }).catch(function(e){ console.warn("Make.com error: "+e.message); });
 
